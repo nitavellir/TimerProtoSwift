@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct TimerView: View {
     @Binding var timerScreenShow:Bool
@@ -45,9 +46,10 @@ struct TimerView: View {
                     Text("Done!")
                         .font(.title)
                         .foregroundColor(Color.green)
-                })/*.onAppear() {
-                    WKInterfaceDevice.current().play(.notification)
-                }*/
+                }).onAppear() {
+                    AudioServicesPlayAlertSoundWithCompletion(1304, nil)
+                    AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) {}
+                }
             }
         }.onDisappear() {
             self.timer?.invalidate()
