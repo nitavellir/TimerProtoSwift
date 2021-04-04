@@ -21,17 +21,17 @@ struct TimerView: View {
             ZStack {
                 ZStack {
                     Circle()
-                        .stroke(Color(.darkGray), style: StrokeStyle(lineWidth: 20))
+                        .stroke(Color(.darkGray), style: StrokeStyle(lineWidth: 30))
                         .scaledToFit()
-                        .padding(25)
+                        .padding(50)
 
                     Circle()
                         .trim(from: 0, to: CGFloat(self.diff / (Double(self.timeVal) + self.diff)))
-                        .stroke(Color(.cyan), style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .bevel))
+                        .stroke(Color(.cyan), style: StrokeStyle(lineWidth: 30, lineCap: .round, lineJoin: .bevel))
                         .scaledToFit()
                         //輪郭線の開始位置を12時の方向にする
                         .rotationEffect(Angle(degrees: -90))
-                        .padding(25)
+                        .padding(50)
 
                 }
 
