@@ -11,7 +11,7 @@ import AudioToolbox
 struct TimerView: View {
     @State var diff:Double = Double(0)
     @Binding var timerScreenShow:Bool
-    @Binding var timeVal:Int
+    @Binding var timeVal:Double
     
     @State var timer:Timer?
 
@@ -26,7 +26,7 @@ struct TimerView: View {
                         .padding(50)
 
                     Circle()
-                        .trim(from: 0, to: CGFloat(self.diff / (Double(self.timeVal) + self.diff)))
+                        .trim(from: 0, to: CGFloat(self.diff / (self.timeVal + self.diff)))
                         .stroke(Color(.cyan), style: StrokeStyle(lineWidth: 30, lineCap: .round, lineJoin: .bevel))
                         .scaledToFit()
                         //輪郭線の開始位置を12時の方向にする
@@ -35,14 +35,14 @@ struct TimerView: View {
 
                 }
 
-                if timeVal > -1 {
+                if timeVal >= 0 {
                     VStack {
-                        Text("\(self.timeVal)").font(.system(size: 40))
+                        Text("\(Int(self.timeVal) + 1)").font(.system(size: 40))
                             .onAppear() {
-                                self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                    if self.timeVal > -1 {
-                                        self.timeVal -= 1
-                                        self.diff += Double(1)
+                                self.timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+                                    if self.timeVal >= 0 {
+                                        self.timeVal -= 0.05
+                                        self.diff += Double(0.05)
                                     }
                                 }
                             }
@@ -82,19 +82,19 @@ struct TimerView: View {
 }
 
 struct ContentView: View {
-    @State var timeVal = 1
+    @State var timeVal:Double = 1
     @State var timerScreenShow:Bool = false
 
     var body: some View {
         NavigationView{
             VStack {
-                Text("Timer \(self.timeVal) seconds").font(.body)
+                Text("Timer \(Int(self.timeVal)) seconds").font(.body)
                 Picker(selection: self.$timeVal, label: Text("")) {
-                    Text("1").tag(1).font(.title2)
-                    Text("5").tag(5).font(.title2)
-                    Text("10").tag(10).font(.title2)
-                    Text("30").tag(30).font(.title2)
-                    Text("60").tag(60).font(.title2)
+                    Text("1").tag(Double(1)).font(.title2)
+                    Text("5").tag(Double(5)).font(.title2)
+                    Text("10").tag(Double(10)).font(.title2)
+                    Text("30").tag(Double(30)).font(.title2)
+                    Text("60").tag(Double(60)).font(.title2)
                 }
                 NavigationLink(
                     destination: TimerView(timerScreenShow: self.$timerScreenShow, timeVal: self.$timeVal),
