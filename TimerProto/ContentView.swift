@@ -37,7 +37,7 @@ struct TimerView: View {
 
                 if timeVal >= 0 {
                     VStack {
-                        Text("\(Int(self.timeVal) + 1)").font(.system(size: 40))
+                        Text("\(getMinuteSecond(timeVal: self.timeVal))").font(.system(size: 40))
                             .onAppear() {
                                 self.timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                                     if self.timeVal >= 0 {
@@ -79,6 +79,19 @@ struct TimerView: View {
             self.diff = 0
         }
     }
+
+    private func getMinuteSecond(timeVal:Double) -> String {
+        let plusOneSecond = timeVal + Double(1)
+        var minute = String(Int(plusOneSecond) / 60)
+        if (Int(plusOneSecond) / 60) / 10 == 0 {
+            minute = "0" + minute
+        }
+        var second = String(Int(plusOneSecond) % 60)
+        if (Int(plusOneSecond) % 60) / 10 == 0 {
+            second = "0" + second
+        }
+        return minute + ":" + second
+    }
 }
 
 struct ContentView: View {
@@ -89,43 +102,43 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             GeometryReader { geometry in
-            VStack {
-                Text("Timer \(Int(self.minuteVal)):\(Int(self.secondVal))").font(.body)
+                VStack {
+                    Text("Timer \(Int(self.minuteVal))分\(Int(self.secondVal))秒").font(.body)
 
-                HStack {
-                    Picker(selection: self.$minuteVal, label: Text("分")) {
-                        ForEach(0..<31) { num in
-                            Text("\(num)").tag(num).font(.title2)
+                    HStack {
+                        Picker(selection: self.$minuteVal, label: Text("分")) {
+                            ForEach(0..<31) { num in
+                                Text("\(num)").tag(num).font(.title2)
+                            }
                         }
-                    }
-                    .frame(maxWidth: geometry.size.width / 4)
-                    .clipped()
-
-                    Text("分").frame(width: 50, height: 30)
                         .frame(maxWidth: geometry.size.width / 4)
                         .clipped()
 
-                    Picker(selection: self.$secondVal, label: Text("秒")) {
-                        ForEach(0..<61) { num in
-                            Text("\(num)").tag(num).font(.title2)
-                        }
-                    }
-                    .frame(maxWidth: geometry.size.width / 4)
-                    .clipped()
+                        Text("分").frame(width: 50, height: 30)
+                            .frame(maxWidth: geometry.size.width / 4)
+                            .clipped()
 
-                    Text("秒").frame(width: 50, height: 30)
+                        Picker(selection: self.$secondVal, label: Text("秒")) {
+                            ForEach(0..<61) { num in
+                                Text("\(num)").tag(num).font(.title2)
+                            }
+                        }
                         .frame(maxWidth: geometry.size.width / 4)
                         .clipped()
+
+                        Text("秒").frame(width: 50, height: 30)
+                            .frame(maxWidth: geometry.size.width / 4)
+                            .clipped()
+                    }
+
+                    NavigationLink(
+                        destination: TimerView(timerScreenShow: self.$timerScreenShow, timeVal: getSecond(minute: self.minuteVal, second: self.secondVal)),
+                        isActive: self.$timerScreenShow,
+                        label: {
+                            Text("Start")
+                        })
+                        .padding()
                 }
-
-                NavigationLink(
-                    destination: TimerView(timerScreenShow: self.$timerScreenShow, timeVal: getSecond(minute: self.minuteVal, second: self.secondVal)),
-                    isActive: self.$timerScreenShow,
-                    label: {
-                        Text("Start")
-                    })
-                    .padding()
-            }
             }
         }
     }
