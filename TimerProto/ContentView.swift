@@ -113,6 +113,7 @@ struct ContentView: View {
                         }
                         .frame(maxWidth: geometry.size.width / 4)
                         .clipped()
+                        .padding()
 
                         Text("分").frame(width: 50, height: 30)
                             .frame(maxWidth: geometry.size.width / 4)
@@ -125,6 +126,7 @@ struct ContentView: View {
                         }
                         .frame(maxWidth: geometry.size.width / 4)
                         .clipped()
+                        .padding()
 
                         Text("秒").frame(width: 50, height: 30)
                             .frame(maxWidth: geometry.size.width / 4)
